@@ -1,2 +1,4 @@
 ---
+PORT: 4100
 SHD_CLIENT_IMAGE: ghcr.io/hpi-schul-cloud/shd-client
+SHD_CLIENT_PREFIX: shd2-
