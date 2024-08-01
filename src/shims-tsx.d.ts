@@ -5,7 +5,7 @@ declare global {
 		interface Element extends VNode {}
 		interface ElementClass extends Vue {}
 		interface IntrinsicElements {
-			// eslint-disable-next-line no-explicit-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			[elem: string]: any;
 		}
 	}
