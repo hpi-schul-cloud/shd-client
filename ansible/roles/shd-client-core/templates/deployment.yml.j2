@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shd-client-deployment
+  namespace: {{ NAMESPACE }}
+  labels:
+    app: shd-client
+    app.kubernetes.io/part-of: schulcloud-verbund
+    app.kubernetes.io/version: {{ SHD_CLIENT_IMAGE_TAG }}
+    app.kubernetes.io/name: shd-client
+    app.kubernetes.io/component: shd
+    app.kubernetes.io/managed-by: ansible
+    git.branch: {{ SHD_CLIENT_BRANCH_NAME }}
+    git.repo: {{ SHD_CLIENT_REPO_NAME }}
+spec:
+  replicas: {{ SHD_CLIENT_REPLICAS|default("1", true) }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+  revisionHistoryLimit: 4
+  paused: false
+  selector:
+    matchLabels:
+      app: shd-client
+  template:
+    metadata:
+      labels:
+        app: shd-client
+        app.kubernetes.io/part-of: schulcloud-verbund
+        app.kubernetes.io/version: {{ SHD_CLIENT_IMAGE_TAG }}
+        app.kubernetes.io/name: shd-client
+        app.kubernetes.io/component: shd
+        app.kubernetes.io/managed-by: ansible
+        git.branch: {{ SHD_CLIENT_BRANCH_NAME }}
+        git.repo: {{ SHD_CLIENT_REPO_NAME }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+      containers:
+      - name: shd-client
+        image: {{ SHD_CLIENT_IMAGE }}:{{ SHD_CLIENT_IMAGE_TAG }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 4100
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: shd-client-configmap
+        volumeMounts:
+        - mountPath: /var/run
+          name: pid-dir
+        - mountPath: /var/cache/nginx
+          name: cache-dir
+        - mountPath: /etc/nginx/conf.d
+          name: conf-dir
+        readinessProbe:
+          httpGet:
+            path: /version
+            port: 4100
+          timeoutSeconds: 4
+          failureThreshold: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /version
+            port: 4100
+          timeoutSeconds: 4
+          failureThreshold: 3
+          periodSeconds: 15
+        startupProbe:
+          httpGet:
+            path: /version
+            port: 4100
+          timeoutSeconds: 4
+          failureThreshold: 5
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: {{ SHD_CLIENT_CPU_LIMITS|default("1000m", true) }}
+            memory: {{ SHD_CLIENT_MEMORY_LIMITS|default("256Mi", true) }}
+          requests:
+            cpu: {{ SHD_CLIENT_CPU_REQUESTS|default("100m", true) }}
+            memory: {{ SHD_CLIENT_MEMORY_REQUESTS|default("32Mi", true) }}
+{% if AFFINITY_ENABLE is defined and AFFINITY_ENABLE|bool %}
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 9
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/part-of
+                  operator: In
+                  values:
+                  - schulcloud-verbund
+              topologyKey: "kubernetes.io/hostname"
+              namespaceSelector: {}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+{% if ANIT_AFFINITY_NODEPOOL_ENABLE is defined and ANIT_AFFINITY_NODEPOOL_ENABLE|bool %}
+          - weight: 10
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - shd-client
+              topologyKey: {{ ANIT_AFFINITY_NODEPOOL_TOPOLOGY_KEY }}
+{% endif %}
+          - weight: 20
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - shd-client
+              topologyKey: "topology.kubernetes.io/zone"
+{% endif %}
+      volumes:
+      - name: pid-dir
+        emptyDir: {}
+      - name: cache-dir
+        emptyDir: {}
+      - name: conf-dir
+        emptyDir: {}
