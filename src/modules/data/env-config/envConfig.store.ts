@@ -16,13 +16,20 @@ export const useEnvConfigStore = defineStore("envConfig", () => {
 	};
 
 	const loadConfig = async (): Promise<void> => {
-		const serverConfig = await serverApi().serverConfigControllerPublicConfig();
+		const { data } = await serverApi().serverConfigControllerPublicConfig();
 
-		envs.value = serverConfig.data;
+		envs.value = data;
+	};
+
+	const setEnvs = (value: ConfigResponse): ConfigResponse => {
+		envs.value = value;
+
+		return envs.value;
 	};
 
 	return {
 		getEnvs: readonly(envs),
+		setEnvs,
 		loadConfig,
 	};
 });

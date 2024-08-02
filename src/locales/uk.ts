@@ -1,3 +1,4 @@
 export default {
-	test: "Transaltion test",
+	"error.generic": "Виникла помилка",
+	"error.load": "Помилка під час завантаження даних.",
 };

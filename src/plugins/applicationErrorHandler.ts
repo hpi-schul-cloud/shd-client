@@ -16,12 +16,12 @@ export const handleApplicationError = (err: unknown) => {
 	const applicationError = err as ApplicationError;
 	if (applicationError.name === ApplicationError.name) {
 		applicationErrorStore.setError(applicationError);
-		return;
+	} else {
+		applicationErrorStore.setError(
+			new ApplicationError({
+				statusCode: 500,
+				translationKey: "error.generic",
+			})
+		);
 	}
-	applicationErrorStore.setError(
-		new ApplicationError({
-			statusCode: 500,
-			translationKey: "error.generic",
-		})
-	);
 };

@@ -29,8 +29,12 @@ const config = deepmerge(defaultPreset, {
 		"<rootDir>/src/layouts/**/*.{js,ts,vue}",
 		"<rootDir>/src/modules/**/*.{js,ts,vue}",
 		"<rootDir>/src/plugins/**/*.(js|ts)",
-		"<rootDir>/src/router/**/*.(js|ts)",
+		// "<rootDir>/src/router/guards/**/*.(js|ts)",
 		"<rootDir>/src/utils/**/*.(js|ts)",
+
+		// Exclude
+		"!<rootDir>/src/**/index.(js|ts)",
+		"!<rootDir>/src/plugins/vuetify.ts",
 	],
 });
 
