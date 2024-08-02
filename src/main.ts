@@ -1,4 +1,4 @@
-import { handleApplicationError } from "@/plugins/application-error-handler";
+import { handleApplicationError } from "@/plugins/applicationErrorHandler";
 import { createI18n } from "@/plugins/i18n";
 import vuetify from "@/plugins/vuetify";
 import router from "@/router";
