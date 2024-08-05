@@ -34,7 +34,6 @@ const config = deepmerge(defaultPreset, {
 
 		// Exclude
 		"!<rootDir>/src/**/index.(js|ts)",
-		"!<rootDir>/src/plugins/vuetify.ts",
 	],
 });
 
