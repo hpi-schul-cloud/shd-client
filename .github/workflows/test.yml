@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  node: 18
+  node: 20
 jobs:
   unit:
     runs-on: ubuntu-latest
@@ -35,15 +35,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=schulcloud-verbund
-            -Dsonar.projectKey=hpi-schul-cloud_shd-client
-            -Dsonar.sources=.
-            -Dsonar.exclusions=src/serverApi/**/*.*
-            -Dsonar.coverage.exclusions=tests/**/*.*,**/*.unit.ts,**/*.unit.js
-            -Dsonar.cpd.exclusions=tests/**/*.*,**/*.unit.ts,**/*.unit.js,**/locales/*.ts
-            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
 
   lint:
     runs-on: ubuntu-latest
