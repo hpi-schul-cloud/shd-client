@@ -1,6 +1,6 @@
 import { useEnvConfigStore } from "@data/env-config";
 
-export const getLoginUrlWithRedirect = (targetPath: string) => {
+export const getLoginUrlWithRedirect = (targetPath: string): string => {
 	const currentOrigin = window.location.origin;
 
 	const currentUrl = new URL(targetPath, currentOrigin);

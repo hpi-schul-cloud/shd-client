@@ -34,9 +34,9 @@ export const mapAxiosErrorToResponseError = (
 			apiError = errorPayload;
 		} else if (typeof errorPayload === "string") {
 			apiError.message = errorPayload;
-			apiError.code = error.response?.status || apiError.code;
-			apiError.type = error.code || apiError.type;
-			apiError.title = error.response?.statusText || apiError.title;
+			apiError.code = error.response?.status ?? apiError.code;
+			apiError.type = error.code ?? apiError.type;
+			apiError.title = error.response?.statusText ?? apiError.title;
 		}
 	}
 	return apiError;

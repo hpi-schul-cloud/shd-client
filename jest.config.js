@@ -26,10 +26,10 @@ const config = deepmerge(defaultPreset, {
 
 	collectCoverageFrom: [
 		// Include
-		"<rootDir>/src/layouts/**/*.{js,ts,vue}",
-		"<rootDir>/src/modules/**/*.{js,ts,vue}",
+		"<rootDir>/src/layouts/**/*.{js,ts}", // add vue files
+		"<rootDir>/src/modules/**/*.{js,ts}", // add vue files
 		"<rootDir>/src/plugins/**/*.(js|ts)",
-		// "<rootDir>/src/router/guards/**/*.(js|ts)",
+		"<rootDir>/src/router/guards/**/*.(js|ts)",
 		"<rootDir>/src/utils/**/*.(js|ts)",
 
 		// Exclude

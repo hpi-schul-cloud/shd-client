@@ -1,6 +1,6 @@
 import { useAuthStore } from "@data/auth";
 import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
-import { getLoginUrlWithRedirect } from "../login-redirect-url";
+import { getLoginUrlWithRedirect } from "./login-redirect-url";
 
 export const isAuthenticatedGuard = (
 	to: RouteLocationNormalized,

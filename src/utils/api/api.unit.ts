@@ -95,7 +95,7 @@ describe("AxiosInstance", () => {
 
 				const data = "NOT_FOUND";
 				const responseError = axiosErrorFactory.build({
-					response: { data },
+					response: { data, status: undefined, statusText: undefined },
 				});
 
 				return {
@@ -111,7 +111,7 @@ describe("AxiosInstance", () => {
 				expect(result).toStrictEqual({
 					message: "NOT_FOUND",
 					code: 1,
-					title: responseError.response?.statusText,
+					title: "",
 					type: "Unknown error",
 				});
 			});
