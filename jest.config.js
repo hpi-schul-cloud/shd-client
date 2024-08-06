@@ -26,6 +26,7 @@ const config = deepmerge(defaultPreset, {
 
 	collectCoverageFrom: [
 		// Include
+		// TODO Vue files are excluded for now, since they don't report the correct coverage
 		"<rootDir>/src/layouts/**/*.{js,ts}", // add vue files
 		"<rootDir>/src/modules/**/*.{js,ts}", // add vue files
 		"<rootDir>/src/plugins/**/*.(js|ts)",
