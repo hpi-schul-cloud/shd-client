@@ -1,4 +1,4 @@
-import * as serverApi from "@/serverApi/v3/api";
+import * as serverMeApi from "@/serverApi/v3/api/me-api";
 import { meResponseFactory } from "@@/tests/test-utils/factory";
 import { mockApiResponse } from "@@/tests/test-utils/mockApiResponse";
 import { createMock, DeepMocked } from "@golevelup/ts-jest";
@@ -6,14 +6,14 @@ import { createPinia, setActivePinia } from "pinia";
 import { useAuthStore } from "./auth.store";
 
 describe("AuthStore", () => {
-	let meApi: DeepMocked<serverApi.MeApiInterface>;
+	let meApi: DeepMocked<serverMeApi.MeApiInterface>;
 
 	beforeEach(() => {
 		setActivePinia(createPinia());
 
-		meApi = createMock<serverApi.MeApiInterface>();
+		meApi = createMock<serverMeApi.MeApiInterface>();
 
-		jest.spyOn(serverApi, "MeApiFactory").mockReturnValue(meApi);
+		jest.spyOn(serverMeApi, "MeApiFactory").mockReturnValue(meApi);
 	});
 
 	afterEach(() => {

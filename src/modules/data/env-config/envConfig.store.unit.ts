@@ -1,4 +1,4 @@
-import * as serverApi from "@/serverApi/v3/api";
+import * as serverDefaultApi from "@/serverApi/v3/api/default-api";
 import { envsFactory } from "@@/tests/test-utils/factory";
 import { mockApiResponse } from "@@/tests/test-utils/mockApiResponse";
 import { createMock, DeepMocked } from "@golevelup/ts-jest";
@@ -6,14 +6,16 @@ import { createPinia, setActivePinia } from "pinia";
 import { useEnvConfigStore } from "./envConfig.store";
 
 describe("EnvConfigStore", () => {
-	let defaultApi: DeepMocked<serverApi.DefaultApiInterface>;
+	let defaultApi: DeepMocked<serverDefaultApi.DefaultApiInterface>;
 
 	beforeEach(() => {
 		setActivePinia(createPinia());
 
-		defaultApi = createMock<serverApi.DefaultApiInterface>();
+		defaultApi = createMock<serverDefaultApi.DefaultApiInterface>();
 
-		jest.spyOn(serverApi, "DefaultApiFactory").mockReturnValue(defaultApi);
+		jest
+			.spyOn(serverDefaultApi, "DefaultApiFactory")
+			.mockReturnValue(defaultApi);
 	});
 
 	afterEach(() => {
