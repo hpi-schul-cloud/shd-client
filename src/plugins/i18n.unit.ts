@@ -17,8 +17,8 @@ describe("i18n plugin", () => {
 	describe("when creating the i18n plugin", () => {
 		const setup = () => {
 			const envs = envsFactory.build({
-				I18N__DEFAULT_LANGUAGE: LanguageType.De,
-				I18N__FALLBACK_LANGUAGE: LanguageType.En,
+				I18N__DEFAULT_LANGUAGE: LanguageType.DE,
+				I18N__FALLBACK_LANGUAGE: LanguageType.EN,
 			});
 
 			useEnvConfigStore().setEnvs(envs);
@@ -29,8 +29,8 @@ describe("i18n plugin", () => {
 
 			const i18n = createI18n();
 
-			expect(unref(i18n.global.locale)).toEqual(LanguageType.De);
-			expect(unref(i18n.global.fallbackLocale)).toEqual(LanguageType.En);
+			expect(unref(i18n.global.locale)).toEqual(LanguageType.DE);
+			expect(unref(i18n.global.fallbackLocale)).toEqual(LanguageType.EN);
 		});
 
 		it("sets the number formats for all supported languages correctly", () => {

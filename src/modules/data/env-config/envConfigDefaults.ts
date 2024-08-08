@@ -7,7 +7,7 @@ import {
 
 export const defaultConfigEnvs: ConfigResponse = {
 	NOT_AUTHENTICATED_REDIRECT_URL: "",
-	SC_THEME: SchulcloudTheme.Default,
+	SC_THEME: SchulcloudTheme.DEFAULT,
 	JWT_TIMEOUT_SECONDS: -1,
 	JWT_SHOW_TIMEOUT_WARNING_SECONDS: -1,
 	FEATURE_LERNSTORE_ENABLED: false,
@@ -18,9 +18,9 @@ export const defaultConfigEnvs: ConfigResponse = {
 	FEATURE_SCHOOL_SANIS_USER_MIGRATION_ENABLED: false,
 	GHOST_BASE_URL: "",
 	I18N__AVAILABLE_LANGUAGES: [],
-	I18N__FALLBACK_LANGUAGE: LanguageType.De,
-	I18N__DEFAULT_LANGUAGE: LanguageType.De,
-	I18N__DEFAULT_TIMEZONE: Timezone.EuropeBerlin,
+	I18N__FALLBACK_LANGUAGE: LanguageType.DE,
+	I18N__DEFAULT_LANGUAGE: LanguageType.DE,
+	I18N__DEFAULT_TIMEZONE: Timezone.EUROPE_BERLIN,
 	SC_TITLE: "",
 	FEATURE_SHOW_OUTDATED_USERS: false,
 	FEATURE_ENABLE_LDAP_SYNC_DURING_MIGRATION: false,
@@ -70,4 +70,6 @@ export const defaultConfigEnvs: ConfigResponse = {
 	FEATURE_MEDIA_SHELF_ENABLED: false,
 	BOARD_COLLABORATION_URI: "ws://localhost:4450",
 	FEATURE_SCHULCONNEX_MEDIA_LICENSE_ENABLED: false,
+	FEATURE_AI_TUTOR_ENABLED: false,
+	TRAINING_URL: "https://lernen.dbildungscloud.de",
 };
