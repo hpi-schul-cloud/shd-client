@@ -31,19 +31,23 @@ export const mapAxiosErrorToResponseError = (
 			Record<string, unknown>
 		>(error)
 	) {
+		if (!error.response) {
+			return apiError;
+		}
+
 		const errorPayload:
 			| ApiValidationError
 			| ApiResponseError
 			| string
-			| undefined = error.response?.data;
+			| undefined = error.response.data;
 
 		if (errorPayload && isObject(errorPayload)) {
 			apiError = errorPayload;
 		} else if (typeof errorPayload === "string") {
 			apiError.message = errorPayload;
-			apiError.code = error.response?.status ?? apiError.code;
+			apiError.code = error.response.status ?? apiError.code;
 			apiError.type = error.code ?? apiError.type;
-			apiError.title = error.response?.statusText ?? apiError.title;
+			apiError.title = error.response.statusText ?? apiError.title;
 		}
 	}
 	return apiError;
