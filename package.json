@@ -7,9 +7,8 @@
     "jest"
   ],
   "scripts": {
-    "serve": "NODE_ENV=development npm run build:dev",
-    "serve:windows": "set NODE_ENV=development&& npm run build:dev",
-    "build:dev": "set NODE_ENV=development&& webpack serve --config config/webpack/webpack.dev.js",
+    "serve": "NODE_ENV=development webpack serve --config config/webpack/webpack.dev.js",
+    "serve:windows": "set NODE_ENV=development&& webpack serve --config config/webpack/webpack.dev.js",
     "build": "NODE_ENV=production webpack --config config/webpack/webpack.prod.js",
     "test": "npm run test:unit",
     "test:unit": "npx jest",
