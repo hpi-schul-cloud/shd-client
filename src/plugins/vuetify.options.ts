@@ -41,6 +41,7 @@ const theme: ThemeDefinition = {
 
 export default {
 	theme: {
+		cspNonce: "**CSP_NONCE**",
 		options: {
 			customProperties: true,
 			cspNonce: window.nonce,

@@ -1,4 +1,8 @@
 @forward 'vuetify/settings' with (
+  // Enables the use of the @layer-api for css https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
+  // This will be the default for Vuetify v4
+  $layers: true,
+
   $body-font-family: var(--font-primary),
   $heading-font-family: var(--font-accent),
   $line-height-root: var(--line-height-md),

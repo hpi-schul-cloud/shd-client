@@ -6,7 +6,7 @@ const router = createRouter({
 	routes,
 });
 
-// TODO add authentication
+// TODO N21-2133: Add authentication
 // router.beforeEach(isAuthenticatedGuard);
 
 export default router;

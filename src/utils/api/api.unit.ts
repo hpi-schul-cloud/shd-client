@@ -4,7 +4,12 @@ import {
 } from "@@/tests/test-utils/factory";
 import { mount } from "@vue/test-utils";
 import axios, { isAxiosError } from "axios";
-import { $axios, initializeAxios, mapAxiosErrorToResponseError } from "./api";
+import {
+	$axios,
+	defaultApiError,
+	initializeAxios,
+	mapAxiosErrorToResponseError,
+} from "./api";
 
 jest.mock("axios");
 const mockedIsAxiosError = jest.mocked(isAxiosError);
@@ -66,37 +71,71 @@ describe("AxiosInstance", () => {
 					code,
 					response: { data, status, statusText },
 				});
-				const expectedPayload = {
-					message: data,
-					code: status,
-					title: statusText,
-					type: code,
-				};
 
 				return {
 					responseError,
-					expectedPayload,
+					status,
+					statusText,
+					data,
+					code,
 				};
 			};
 
 			it("should return correctly payload", () => {
 				mockedIsAxiosError.mockReturnValueOnce(true);
-				const { responseError, expectedPayload } = setup();
+				const { responseError, data, status, statusText, code } = setup();
 
 				const result = mapAxiosErrorToResponseError(responseError);
 
-				expect(result).toStrictEqual(expectedPayload);
+				expect(result).toStrictEqual({
+					message: data,
+					code: status,
+					title: statusText,
+					type: code,
+				});
 			});
 		});
 
-		describe("when response props not set correctly", () => {
+		describe("when response payload is a string and status is missing", () => {
 			const setup = () => {
-				mockedIsAxiosError.mockReturnValueOnce(true);
-
 				const data = "NOT_FOUND";
 				const responseError = axiosErrorFactory.build({
 					response: { data, status: undefined, statusText: undefined },
 				});
+
+				mockedIsAxiosError.mockReturnValueOnce(true);
+
+				return {
+					responseError,
+					data,
+				};
+			};
+
+			it("should return correctly payload", () => {
+				const { responseError, data } = setup();
+
+				const result = mapAxiosErrorToResponseError(responseError);
+
+				expect(result).toStrictEqual({
+					message: data,
+					code: defaultApiError.code,
+					title: defaultApiError.title,
+					type: defaultApiError.type,
+				});
+			});
+		});
+
+		describe("when response payload is undefined", () => {
+			const setup = () => {
+				const responseError = axiosErrorFactory.build({
+					response: {
+						data: undefined,
+						status: undefined,
+						statusText: undefined,
+					},
+				});
+
+				mockedIsAxiosError.mockReturnValueOnce(true);
 
 				return {
 					responseError,
@@ -108,38 +147,29 @@ describe("AxiosInstance", () => {
 
 				const result = mapAxiosErrorToResponseError(responseError);
 
-				expect(result).toStrictEqual({
-					message: "NOT_FOUND",
-					code: 1,
-					title: "",
-					type: "Unknown error",
-				});
+				expect(result).toStrictEqual(defaultApiError);
 			});
 		});
 
-		describe("when response payload is not AxiosError", () => {
+		describe("when response is undefined", () => {
 			const setup = () => {
-				const responseError = new Error("Test error");
-				const expectedPayload = {
-					message: "UNKNOWN_ERROR",
-					code: 1,
-					title: "",
-					type: "Unknown error",
-				};
+				const responseError = axiosErrorFactory.build({
+					response: undefined,
+				});
+
+				mockedIsAxiosError.mockReturnValueOnce(true);
 
 				return {
 					responseError,
-					expectedPayload,
 				};
 			};
 
 			it("should return correctly payload", () => {
-				mockedIsAxiosError.mockReturnValueOnce(true);
-				const { responseError, expectedPayload } = setup();
+				const { responseError } = setup();
 
 				const result = mapAxiosErrorToResponseError(responseError);
 
-				expect(result).toStrictEqual(expectedPayload);
+				expect(result).toStrictEqual(defaultApiError);
 			});
 		});
 	});

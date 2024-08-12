@@ -1,4 +1,5 @@
-import "vuetify/styles";
+// Stylesheets must be imported before any Component for the @layer styles to work
+import "@/styles/main.scss";
 import { createVuetify } from "vuetify";
 
 import theme from "./vuetify.options";

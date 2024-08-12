@@ -1,5 +1,6 @@
 import { handleApplicationError } from "@/plugins/applicationErrorHandler";
 import { createI18n } from "@/plugins/i18n";
+// Vuetify must be imported before any Component for the @layer styles to work
 import vuetify from "@/plugins/vuetify";
 import router from "@/router";
 import { initializeAxios } from "@/utils/api";
@@ -12,8 +13,6 @@ import Cookies from "universal-cookie";
 import { createApp } from "vue";
 import VueDOMPurifyHTML from "vue-dompurify-html";
 import App from "./App.vue";
-
-import "@/styles/global.scss";
 
 const app = createApp(App);
 
