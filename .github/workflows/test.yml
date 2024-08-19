@@ -1,0 +1,46 @@
+name: Test code
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  node: 20
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.node }}
+      - name: npm ci
+        run: npm ci --prefer-offline --no-audit
+      - name: npm run test:unit:ci
+        run: npm run test:unit:ci
+        env:
+          NODE_OPTIONS: "--unhandled-rejections=warn"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: SonarCloud upload coverage
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: npm ci
+        run: npm ci --prefer-offline --no-audit
+      - name: npm run lint
+        run: npm run lint

@@ -1,0 +1,10 @@
+.github
+.vscode
+deploy
+node_modules
+Dockerfile.*
+
+**/*.unit.ts
+**/*.unit.js
+
+public/runtime.config.json

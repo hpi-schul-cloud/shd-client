@@ -1,0 +1,11 @@
+#jinja2: trim_blocks: "True", lstrip_blocks: "True"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shd-client-configmap
+  namespace: {{ NAMESPACE }}
+  labels:
+    app: shd-client
+data:
+  TZ: "Europe/Berlin"
+  API_URL: "https://{{ DOMAIN }}/api"

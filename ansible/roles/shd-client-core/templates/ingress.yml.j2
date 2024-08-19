@@ -1,0 +1,40 @@
+#jinja2: trim_blocks: "True", lstrip_blocks: "True"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ NAMESPACE }}-shd-client-ingress
+  namespace: {{ NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "{{ TLS_ENABLED|default("false") }}"
+    # type of authentication
+    nginx.ingress.kubernetes.io/auth-type: basic
+    # name of the secret that contains the user/password definitions
+    nginx.ingress.kubernetes.io/auth-secret: shd-basic-auth-secret
+    # message to display with an appropriate context why the authentication is required
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+{% if CLUSTER_ISSUER is defined %}
+    cert-manager.io/cluster-issuer: {{ CLUSTER_ISSUER }}
+{% endif %}
+
+spec:
+  ingressClassName: {{ INGRESS_CLASS }}
+{% if CLUSTER_ISSUER is defined or (TLS_ENABLED is defined and TLS_ENABLED|bool) %}
+  tls:
+  - hosts:
+      - {{ SHD_CLIENT_PREFIX }}{{ DOMAIN }}
+{% if CLUSTER_ISSUER is defined %}
+    secretName: {{ SHD_CLIENT_PREFIX }}{{ DOMAIN }}-tls
+{% endif %}
+{% endif %}
+  rules:
+  - host: {{ SHD_CLIENT_PREFIX }}{{ DOMAIN }}
+    http:
+      paths:
+      ### SHD
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: shd-client-svc
+            port:
+              number: 4100
