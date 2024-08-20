@@ -7,10 +7,9 @@
     "jest"
   ],
   "scripts": {
-    "serve": "NODE_ENV=development webpack serve --config config/webpack/webpack.dev.js",
-    "serve:windows": "set NODE_ENV=development&& webpack serve --config config/webpack/webpack.dev.js",
-    "build": "NODE_ENV=production webpack --config config/webpack/webpack.prod.js",
-    "test": "npm run test:unit",
+    "serve": "cross-env NODE_ENV=development webpack serve --config config/webpack/webpack.dev.js",
+    "build": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.prod.js",
+    "test": "cross-env NODE_ENV=test npm run test:unit",
     "test:unit": "npx jest",
     "test:unit:ci": "npm run test:unit -- --coverage --ci --maxWorkers=4",
     "lint": "npx eslint 'src/**/*.{ts,js,vue}'",
@@ -19,6 +18,7 @@
   "dependencies": {
     "@vueuse/core": "^10.11.0",
     "axios": "^1.7.2",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.12",
     "pinia": "^2.2.0",
     "ts-node": "^10.9.2",
