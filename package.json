@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.11.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "dayjs": "^1.11.12",
     "pinia": "^2.2.0",
     "ts-node": "^10.9.2",
@@ -36,7 +36,7 @@
     "@intlify/bundle-utils": "^8.0.0",
     "@jest/globals": "^29.7.0",
     "@mdi/js": "^7.4.47",
-    "@openapitools/openapi-generator-cli": "^2.13.4",
+    "@openapitools/openapi-generator-cli": "^2.13.5",
     "@pinia/testing": "^0.1.4",
     "@types/jest": "^29.5.12",
     "@types/webpack-env": "^1.18.5",
