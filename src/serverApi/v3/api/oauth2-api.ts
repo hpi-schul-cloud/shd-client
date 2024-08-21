@@ -29,13 +29,13 @@ import { ConsentSessionResponse } from '../models';
 // @ts-ignore
 import { LoginRequestBody } from '../models';
 // @ts-ignore
-import { LoginResponse } from '../models';
-// @ts-ignore
 import { OauthClientCreateBody } from '../models';
 // @ts-ignore
 import { OauthClientResponse } from '../models';
 // @ts-ignore
 import { OauthClientUpdateBody } from '../models';
+// @ts-ignore
+import { OauthProviderLoginResponse } from '../models';
 // @ts-ignore
 import { RedirectResponse } from '../models';
 /**
@@ -581,7 +581,7 @@ export const Oauth2ApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async oauthProviderControllerGetLoginRequest(challenge: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponse>> {
+        async oauthProviderControllerGetLoginRequest(challenge: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OauthProviderLoginResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.oauthProviderControllerGetLoginRequest(challenge, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -714,7 +714,7 @@ export const Oauth2ApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        oauthProviderControllerGetLoginRequest(challenge: string, options?: any): AxiosPromise<LoginResponse> {
+        oauthProviderControllerGetLoginRequest(challenge: string, options?: any): AxiosPromise<OauthProviderLoginResponse> {
             return localVarFp.oauthProviderControllerGetLoginRequest(challenge, options).then((request) => request(axios, basePath));
         },
         /**
@@ -839,7 +839,7 @@ export interface Oauth2ApiInterface {
      * @throws {RequiredError}
      * @memberof Oauth2ApiInterface
      */
-    oauthProviderControllerGetLoginRequest(challenge: string, options?: any): AxiosPromise<LoginResponse>;
+    oauthProviderControllerGetLoginRequest(challenge: string, options?: any): AxiosPromise<OauthProviderLoginResponse>;
 
     /**
      * 

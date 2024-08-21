@@ -44,7 +44,7 @@ app.use(VueDOMPurifyHTML, {
 	if (jwt) {
 		axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 		try {
-			await useAuthStore().login();
+			await useAuthStore().fetchMe();
 		} catch (e) {
 			// eslint-disable-next-line no-console
 			console.error("### JWT invalid: ", e);

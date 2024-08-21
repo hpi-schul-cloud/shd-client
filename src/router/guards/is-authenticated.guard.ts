@@ -1,6 +1,5 @@
 import { useAuthStore } from "@data/auth";
 import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
-import { getLoginUrlWithRedirect } from "./login-redirect-url";
 
 export const isAuthenticatedGuard = (
 	to: RouteLocationNormalized,
@@ -9,12 +8,22 @@ export const isAuthenticatedGuard = (
 ) => {
 	const userIsLoggedIn = useAuthStore().isLoggedIn;
 
-	if (userIsLoggedIn || isRoutePublic(to)) {
+	if (userIsLoggedIn && to.path.startsWith("/login")) {
+		window.location.assign("/");
+	} else if (userIsLoggedIn || isRoutePublic(to)) {
 		next();
 	} else {
-		const loginUrl = getLoginUrlWithRedirect(to.fullPath);
-		window.location.assign(loginUrl);
+		const loginUrl = new URL("/login", window.location.origin);
+		loginUrl.searchParams.set("redirect", to.fullPath);
+
+		const relativePath = toPathString(loginUrl);
+
+		window.location.assign(relativePath);
 	}
+};
+
+export const toPathString = (url: URL): string => {
+	return url.pathname + url.search + url.hash;
 };
 
 const isRoutePublic = (route: RouteLocationNormalized) => {
