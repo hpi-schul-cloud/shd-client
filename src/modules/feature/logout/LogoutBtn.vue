@@ -22,5 +22,3 @@ const onLogout = async (): Promise<void> => {
 	await router.push("/login");
 };
 </script>
-
-<style scoped></style>
