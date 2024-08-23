@@ -12,6 +12,15 @@ describe("Authentication Guard", () => {
 
 	beforeEach(() => {
 		setActivePinia(createTestingPinia());
+
+		const assign = jest.fn();
+		Object.defineProperty(window, "location", {
+			configurable: true,
+			value: {
+				assign,
+				origin: "https://test.com",
+			},
+		});
 	});
 
 	afterEach(() => {
@@ -59,9 +68,9 @@ describe("Authentication Guard", () => {
 			it("should redirect to the main page", async () => {
 				const { to } = setup();
 
-				const result = await isAuthenticatedGuard(to, from, next);
+				await isAuthenticatedGuard(to, from, next);
 
-				expect(result).toEqual(postLoginRoute);
+				expect(window.location.assign).toHaveBeenCalledWith(postLoginRoute);
 			});
 		});
 
@@ -107,9 +116,9 @@ describe("Authentication Guard", () => {
 			it("should redirect to login with post login redirect query", async () => {
 				const { to } = setup();
 
-				const result = await isAuthenticatedGuard(to, from, next);
+				await isAuthenticatedGuard(to, from, next);
 
-				expect(result).toEqual(
+				expect(window.location.assign).toHaveBeenCalledWith(
 					"/login?redirect=%2Ftest%3Fparam1%3Dvalue1%23hash1"
 				);
 			});

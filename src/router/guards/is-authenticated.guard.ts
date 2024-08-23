@@ -12,7 +12,7 @@ export const isAuthenticatedGuard: NavigationGuard = (
 	const userIsLoggedIn = useAuthStore().isLoggedIn;
 
 	if (userIsLoggedIn && to.path.startsWith("/login")) {
-		return postLoginRoute;
+		window.location.assign(postLoginRoute);
 	} else if (userIsLoggedIn || isRoutePublic(to)) {
 		return true;
 	} else {
@@ -21,8 +21,10 @@ export const isAuthenticatedGuard: NavigationGuard = (
 
 		const relativePath = toPathString(loginUrl);
 
-		return relativePath;
+		window.location.assign(relativePath);
 	}
+
+	return false;
 };
 
 export const toPathString = (url: URL): string => {

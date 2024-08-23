@@ -7,6 +7,6 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach(isAuthenticatedGuard);
+router.beforeResolve(isAuthenticatedGuard);
 
 export default router;
