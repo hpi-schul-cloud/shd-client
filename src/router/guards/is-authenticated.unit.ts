@@ -1,15 +1,15 @@
-import { meResponseFactory } from "@@/tests/test-utils/factory";
+import { routeLocationNormalizedFactory } from "@@/tests/test-utils/factory";
 import { useAuthStore } from "@data/auth";
 import { createTestingPinia } from "@pinia/testing";
 import { setActivePinia } from "pinia";
 import { RouteLocationNormalized } from "vue-router";
+import { postLoginRoute } from "../postLoginRoute";
 import { isAuthenticatedGuard } from "./is-authenticated.guard";
 
-jest.mock("./login-redirect-url", () => ({
-	getLoginUrlWithRedirect: () => "login-url",
-}));
-
 describe("Authentication Guard", () => {
+	const from: RouteLocationNormalized = {} as RouteLocationNormalized;
+	const next = jest.fn();
+
 	beforeEach(() => {
 		setActivePinia(createTestingPinia());
 	});
@@ -21,41 +21,55 @@ describe("Authentication Guard", () => {
 	describe("isAuthenticatedGuard", () => {
 		describe("when authenticated", () => {
 			const setup = () => {
-				const to: RouteLocationNormalized = {
-					fullPath: "/test",
-				} as RouteLocationNormalized;
-				const from: RouteLocationNormalized = {} as RouteLocationNormalized;
-				const next = jest.fn();
-				const authStore = useAuthStore();
+				const to = routeLocationNormalizedFactory("/test");
 
-				authStore.me = meResponseFactory.build();
+				const authStore = useAuthStore();
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-expect-error
+				authStore.isLoggedIn = true;
 
 				return {
 					to,
-					from,
-					next,
 				};
 			};
 
-			it("should pass", () => {
-				const { to, from, next } = setup();
+			it("should pass", async () => {
+				const { to } = setup();
 
-				isAuthenticatedGuard(to, from, next);
+				const result = await isAuthenticatedGuard(to, from, next);
 
-				expect(next).toHaveBeenCalled();
+				expect(result).toEqual(true);
 			});
 		});
 
-		describe("when the url is public", () => {
+		describe("when accessing the login page while authenticated", () => {
 			const setup = () => {
-				const to: RouteLocationNormalized = {
-					fullPath: "/test",
-					meta: {
-						isPublic: true,
-					},
-				} as unknown as RouteLocationNormalized;
-				const from: RouteLocationNormalized = {} as RouteLocationNormalized;
-				const next = jest.fn();
+				const to = routeLocationNormalizedFactory("/login");
+
+				const authStore = useAuthStore();
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-expect-error
+				authStore.isLoggedIn = true;
+
+				return {
+					to,
+				};
+			};
+
+			it("should redirect to the main page", async () => {
+				const { to } = setup();
+
+				const result = await isAuthenticatedGuard(to, from, next);
+
+				expect(result).toEqual(postLoginRoute);
+			});
+		});
+
+		describe("when not authenticated and the url is public", () => {
+			const setup = () => {
+				const to = routeLocationNormalizedFactory("/test", {
+					meta: { isPublic: true },
+				});
 				const authStore = useAuthStore();
 
 				authStore.me = null;
@@ -67,54 +81,37 @@ describe("Authentication Guard", () => {
 				};
 			};
 
-			it("should pass", () => {
-				const { to, from, next } = setup();
+			it("should pass", async () => {
+				const { to } = setup();
 
-				isAuthenticatedGuard(to, from, next);
+				const result = await isAuthenticatedGuard(to, from, next);
 
-				expect(next).toHaveBeenCalled();
+				expect(result).toEqual(true);
 			});
 		});
 
 		describe("when not authenticated and the url is not public", () => {
 			const setup = () => {
-				const to: RouteLocationNormalized = {
-					fullPath: "/test",
-				} as RouteLocationNormalized;
-				const from: RouteLocationNormalized = {} as RouteLocationNormalized;
-				const next = jest.fn();
+				const to = routeLocationNormalizedFactory("/test?param1=value1#hash1");
 				const authStore = useAuthStore();
 
 				authStore.me = null;
-
-				const assign = jest.fn();
-				Object.defineProperty(window, "location", {
-					configurable: true,
-					value: { assign },
-				});
 
 				return {
 					to,
 					from,
 					next,
-					assign,
 				};
 			};
 
-			it("should redirect to login", () => {
-				const { to, from, next, assign } = setup();
+			it("should redirect to login with post login redirect query", async () => {
+				const { to } = setup();
 
-				isAuthenticatedGuard(to, from, next);
+				const result = await isAuthenticatedGuard(to, from, next);
 
-				expect(assign).toHaveBeenCalledWith("login-url");
-			});
-
-			it("should not pass", () => {
-				const { to, from, next } = setup();
-
-				isAuthenticatedGuard(to, from, next);
-
-				expect(next).not.toHaveBeenCalled();
+				expect(result).toEqual(
+					"/login?redirect=%2Ftest%3Fparam1%3Dvalue1%23hash1"
+				);
 			});
 		});
 	});

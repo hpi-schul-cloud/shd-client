@@ -43,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import { postLoginRoute } from "@/router/postLoginRoute";
 import { ApplicationError } from "@data/application-error";
 import { useAuthStore } from "@data/auth";
 import { mdiEmailOutline, mdiEye, mdiEyeOff, mdiLockOutline } from "@mdi/js";
@@ -75,7 +76,7 @@ const onLogin = async () => {
 	const redirectQuery: LocationQueryValue | LocationQueryValue[] =
 		router.currentRoute.value.query["redirect"];
 
-	let redirect = "/";
+	let redirect = postLoginRoute;
 	if (typeof redirectQuery === "string") {
 		redirect = decodeURIComponent(redirectQuery);
 	}

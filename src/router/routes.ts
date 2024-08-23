@@ -1,4 +1,3 @@
-import { Layouts } from "@/layouts";
 import HomeView from "@page/HomeView.vue";
 import { RouteRecordRaw } from "vue-router";
 
@@ -15,7 +14,6 @@ export const routes: Readonly<RouteRecordRaw[]> = [
 		component: () => import("@page/Login.page.vue"),
 		meta: {
 			isPublic: true,
-			layout: Layouts.LOGGED_OUT,
 		},
 	},
 ];

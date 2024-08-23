@@ -8,6 +8,7 @@ import { createTestingPinia } from "@pinia/testing";
 import { mount } from "@vue/test-utils";
 import { setActivePinia } from "pinia";
 import { Router, useRouter } from "vue-router";
+import { postLoginRoute } from "../../router/postLoginRoute";
 import LoginPage from "./Login.page.vue";
 
 jest.mock("vue-router");
@@ -72,7 +73,7 @@ describe("LoginPage", () => {
 				await loginBtn.trigger("click");
 
 				expect(authStore.login).toHaveBeenCalledWith(username, password);
-				expect(routerMock.push).toHaveBeenCalledWith("/");
+				expect(routerMock.push).toHaveBeenCalledWith(postLoginRoute);
 			});
 		});
 
