@@ -1,49 +1,27 @@
 <template>
-	<VCard
-		class="mx-auto px-12 py-6 mt-8"
-		elevation="8"
-		max-width="448"
-		rounded="lg"
-	>
+	<VCard class="mx-auto px-12 py-6 mt-8 container" elevation="8" rounded="lg">
 		<VCardTitle class="mb-4 text-center">SuperHero-Login</VCardTitle>
 
-		<div class="text-subtitle-1 text-medium-emphasis">E-Mail Adresse</div>
 		<VTextField
 			v-model="username"
+			:label="$t('common.words.emailAddress')"
 			density="compact"
 			:prepend-inner-icon="mdiEmailOutline"
-			placeholder="E-Mail Adresse"
 			variant="outlined"
+			data-testid="login-input-username"
 		/>
 
-		<div class="text-subtitle-1 text-medium-emphasis">Password</div>
 		<VTextField
 			v-model="password"
+			:label="$t('common.words.password')"
 			:append-inner-icon="showPassword ? mdiEyeOff : mdiEye"
 			:type="showPassword ? 'text' : 'password'"
 			density="compact"
 			:prepend-inner-icon="mdiLockOutline"
-			placeholder="Password"
 			variant="outlined"
 			@click:append-inner="showPassword = !showPassword"
+			data-testid="login-input-password"
 		/>
-
-		<div class="text-subtitle-1 text-medium-emphasis">
-			Zwei-Faktor-Authentifizierung
-		</div>
-		<VTextField
-			v-model="totp"
-			density="compact"
-			:prepend-inner-icon="mdiTwoFactorAuthentication"
-			placeholder="Time-based one-time password (TOTP)"
-			variant="outlined"
-		/>
-
-		<VCard v-if="error" class="mb-12" color="error" variant="tonal">
-			<VCardText class="text-medium-emphasis text-caption">
-				{{ error.message }}
-			</VCardText>
-		</VCard>
 
 		<VBtn
 			class="mb-8"
@@ -53,21 +31,21 @@
 			block
 			@click="onLogin"
 			@keyup.enter="onLogin"
+			data-testid="login-btn"
 		>
-			Log In
+			{{ $t("common.actions.login") }}
 		</VBtn>
+
+		<VAlert v-if="loginError" type="error" data-testid="login-error">
+			{{ $t(loginError.translationKey) }}
+		</VAlert>
 	</VCard>
 </template>
 
 <script setup lang="ts">
+import { ApplicationError } from "@data/application-error";
 import { useAuthStore } from "@data/auth";
-import {
-	mdiEmailOutline,
-	mdiEye,
-	mdiEyeOff,
-	mdiLockOutline,
-	mdiTwoFactorAuthentication,
-} from "@mdi/js";
+import { mdiEmailOutline, mdiEye, mdiEyeOff, mdiLockOutline } from "@mdi/js";
 import { Ref, ref } from "vue";
 import { LocationQueryValue, useRouter } from "vue-router";
 
@@ -78,16 +56,18 @@ const showPassword: Ref<boolean> = ref(false);
 
 const username: Ref<string> = ref("");
 const password: Ref<string> = ref("");
-const totp: Ref<string> = ref("");
 
-const error: Ref<Error | null> = ref(null);
+const loginError: Ref<ApplicationError | null> = ref(null);
 
 const onLogin = async () => {
+	if (!username.value || !password.value) {
+		return;
+	}
+
 	try {
-		await authStore.login(username.value, password.value, totp.value);
+		await authStore.login(username.value, password.value);
 	} catch (err: unknown) {
-		error.value =
-			err instanceof Error ? err : new Error("Es ist ein Fehler aufgetreten");
+		loginError.value = ApplicationError.fromUnknown(err);
 
 		return;
 	}
@@ -100,6 +80,18 @@ const onLogin = async () => {
 		redirect = decodeURIComponent(redirectQuery);
 	}
 
-	await router.replace(redirect);
+	await router.push(redirect);
 };
 </script>
+
+<style scoped>
+.container {
+	width: 400px;
+}
+
+@media only screen and (max-width: 399px) {
+	.container {
+		width: 100%;
+	}
+}
+</style>
