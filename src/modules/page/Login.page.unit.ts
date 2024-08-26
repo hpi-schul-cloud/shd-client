@@ -1,3 +1,4 @@
+import { postLoginRoute } from "@/router/postLoginRoute";
 import {
 	createTestingI18n,
 	createTestingVuetify,
@@ -8,7 +9,6 @@ import { createTestingPinia } from "@pinia/testing";
 import { mount } from "@vue/test-utils";
 import { setActivePinia } from "pinia";
 import { Router, useRouter } from "vue-router";
-import { postLoginRoute } from "../../router/postLoginRoute";
 import LoginPage from "./Login.page.vue";
 
 jest.mock("vue-router");

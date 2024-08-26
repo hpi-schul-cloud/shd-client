@@ -132,10 +132,10 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        courseControllerGetCourseById: async (courseId: string, options: any = {}): Promise<RequestArgs> => {
+        courseControllerGetCourseCcMetadataById: async (courseId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
-            assertParamExists('courseControllerGetCourseById', 'courseId', courseId)
-            const localVarPath = `/courses/{courseId}`
+            assertParamExists('courseControllerGetCourseCcMetadataById', 'courseId', courseId)
+            const localVarPath = `/courses/{courseId}/cc-metadata`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -324,8 +324,8 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async courseControllerGetCourseById(courseId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseCommonCartridgeMetadataResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseControllerGetCourseById(courseId, options);
+        async courseControllerGetCourseCcMetadataById(courseId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseCommonCartridgeMetadataResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseControllerGetCourseCcMetadataById(courseId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -399,8 +399,8 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        courseControllerGetCourseById(courseId: string, options?: any): AxiosPromise<CourseCommonCartridgeMetadataResponse> {
-            return localVarFp.courseControllerGetCourseById(courseId, options).then((request) => request(axios, basePath));
+        courseControllerGetCourseCcMetadataById(courseId: string, options?: any): AxiosPromise<CourseCommonCartridgeMetadataResponse> {
+            return localVarFp.courseControllerGetCourseCcMetadataById(courseId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -470,7 +470,7 @@ export interface CoursesApiInterface {
      * @throws {RequiredError}
      * @memberof CoursesApiInterface
      */
-    courseControllerGetCourseById(courseId: string, options?: any): AxiosPromise<CourseCommonCartridgeMetadataResponse>;
+    courseControllerGetCourseCcMetadataById(courseId: string, options?: any): AxiosPromise<CourseCommonCartridgeMetadataResponse>;
 
     /**
      * 
@@ -544,8 +544,8 @@ export class CoursesApi extends BaseAPI implements CoursesApiInterface {
      * @throws {RequiredError}
      * @memberof CoursesApi
      */
-    public courseControllerGetCourseById(courseId: string, options?: any) {
-        return CoursesApiFp(this.configuration).courseControllerGetCourseById(courseId, options).then((request) => request(this.axios, this.basePath));
+    public courseControllerGetCourseCcMetadataById(courseId: string, options?: any) {
+        return CoursesApiFp(this.configuration).courseControllerGetCourseCcMetadataById(courseId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
