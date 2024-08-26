@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.24.3",
     "@babel/preset-env": "^7.24.3",
-    "@golevelup/ts-jest": "^0.5.0",
+    "@golevelup/ts-jest": "^0.5.4",
     "@intlify/bundle-utils": "^8.0.0",
     "@jest/globals": "^29.7.0",
     "@mdi/js": "^7.4.47",
