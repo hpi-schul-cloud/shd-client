@@ -1,5 +1,6 @@
 import {
 	ApplicationError,
+	HttpStatusCode,
 	useApplicationErrorStore,
 } from "@data/application-error";
 
@@ -19,7 +20,7 @@ export const handleApplicationError = (err: unknown) => {
 	} else {
 		applicationErrorStore.setError(
 			new ApplicationError({
-				statusCode: 500,
+				statusCode: HttpStatusCode.InternalServerError,
 				translationKey: "error.generic",
 			})
 		);

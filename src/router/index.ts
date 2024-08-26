@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { isAuthenticatedGuard } from "./guards";
 import { routes } from "./routes";
 
 const router = createRouter({
@@ -6,7 +7,6 @@ const router = createRouter({
 	routes,
 });
 
-// TODO N21-2133: Add authentication
-// router.beforeEach(isAuthenticatedGuard);
+router.beforeResolve(isAuthenticatedGuard);
 
 export default router;

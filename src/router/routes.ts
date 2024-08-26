@@ -9,8 +9,11 @@ export const routes: Readonly<RouteRecordRaw[]> = [
 		component: HomeView,
 	},
 	{
-		path: "/about",
-		name: "about",
-		component: () => import("@page/AboutView.vue"),
+		path: "/login",
+		name: "login",
+		component: () => import("@page/Login.page.vue"),
+		meta: {
+			isPublic: true,
+		},
 	},
 ];

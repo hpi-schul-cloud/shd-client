@@ -1,23 +1,37 @@
 import { useAuthStore } from "@data/auth";
-import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
-import { getLoginUrlWithRedirect } from "./login-redirect-url";
+import {
+	NavigationGuard,
+	NavigationGuardReturn,
+	RouteLocationNormalized,
+} from "vue-router";
+import { postLoginRoute } from "../postLoginRoute";
 
-export const isAuthenticatedGuard = (
-	to: RouteLocationNormalized,
-	from: RouteLocationNormalized,
-	next: NavigationGuardNext
-) => {
+export const isAuthenticatedGuard: NavigationGuard = (
+	to: RouteLocationNormalized
+): NavigationGuardReturn => {
 	const userIsLoggedIn = useAuthStore().isLoggedIn;
 
-	if (userIsLoggedIn || isRoutePublic(to)) {
-		next();
+	if (userIsLoggedIn && to.path.startsWith("/login")) {
+		window.location.assign(postLoginRoute);
+	} else if (userIsLoggedIn || isRoutePublic(to)) {
+		return true;
 	} else {
-		const loginUrl = getLoginUrlWithRedirect(to.fullPath);
-		window.location.assign(loginUrl);
+		const loginUrl = new URL("/login", window.location.origin);
+		loginUrl.searchParams.set("redirect", to.fullPath);
+
+		const relativePath = toPathString(loginUrl);
+
+		window.location.assign(relativePath);
 	}
+
+	return false;
 };
 
-const isRoutePublic = (route: RouteLocationNormalized) => {
+export const toPathString = (url: URL): string => {
+	return url.pathname + url.search + url.hash;
+};
+
+const isRoutePublic = (route: RouteLocationNormalized): boolean => {
 	if (typeof route.meta?.isPublic === "boolean") {
 		return route.meta.isPublic;
 	} else {

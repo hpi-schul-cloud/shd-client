@@ -14,10 +14,10 @@ export const initializeAxios = (axios: AxiosInstance) => {
 };
 
 export const defaultApiError: ApiResponseError | ApiValidationError = {
-	message: "UNKNOWN_ERROR",
-	code: 1,
-	title: "",
-	type: "Unknown error",
+	message: "Unknown error",
+	code: 500,
+	title: "Unknown Error",
+	type: "UNKNOWN_ERROR",
 };
 
 export const mapAxiosErrorToResponseError = (

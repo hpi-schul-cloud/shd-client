@@ -21,6 +21,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
+import { CourseCommonCartridgeMetadataResponse } from '../models';
+// @ts-ignore
 import { CourseExportBodyParams } from '../models';
 // @ts-ignore
 import { CourseMetadataListResponse } from '../models';
@@ -111,6 +113,44 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             if (limit !== undefined) {
                 localVarQueryParameter['limit'] = limit;
             }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get common cartridge metadata of a course by Id.
+         * @param {string} courseId The id of the course
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseControllerGetCourseCcMetadataById: async (courseId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('courseControllerGetCourseCcMetadataById', 'courseId', courseId)
+            const localVarPath = `/courses/{courseId}/cc-metadata`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -279,6 +319,17 @@ export const CoursesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get common cartridge metadata of a course by Id.
+         * @param {string} courseId The id of the course
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async courseControllerGetCourseCcMetadataById(courseId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseCommonCartridgeMetadataResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseControllerGetCourseCcMetadataById(courseId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get permissions for a user in a course.
          * @param {string} courseId The id of the course
          * @param {*} [options] Override http request option.
@@ -343,6 +394,16 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Get common cartridge metadata of a course by Id.
+         * @param {string} courseId The id of the course
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseControllerGetCourseCcMetadataById(courseId: string, options?: any): AxiosPromise<CourseCommonCartridgeMetadataResponse> {
+            return localVarFp.courseControllerGetCourseCcMetadataById(courseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get permissions for a user in a course.
          * @param {string} courseId The id of the course
          * @param {*} [options] Override http request option.
@@ -400,6 +461,16 @@ export interface CoursesApiInterface {
      * @memberof CoursesApiInterface
      */
     courseControllerFindForUser(skip?: number, limit?: number, options?: any): AxiosPromise<CourseMetadataListResponse>;
+
+    /**
+     * 
+     * @summary Get common cartridge metadata of a course by Id.
+     * @param {string} courseId The id of the course
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CoursesApiInterface
+     */
+    courseControllerGetCourseCcMetadataById(courseId: string, options?: any): AxiosPromise<CourseCommonCartridgeMetadataResponse>;
 
     /**
      * 
@@ -463,6 +534,18 @@ export class CoursesApi extends BaseAPI implements CoursesApiInterface {
      */
     public courseControllerFindForUser(skip?: number, limit?: number, options?: any) {
         return CoursesApiFp(this.configuration).courseControllerFindForUser(skip, limit, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get common cartridge metadata of a course by Id.
+     * @param {string} courseId The id of the course
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CoursesApi
+     */
+    public courseControllerGetCourseCcMetadataById(courseId: string, options?: any) {
+        return CoursesApiFp(this.configuration).courseControllerGetCourseCcMetadataById(courseId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -8,22 +8,28 @@
 					</div>
 					<h1 class="ma-0">New Superhero-Dashboard</h1>
 				</div>
+
+				<LogoutBtn />
+
 				<nav>
 					<VTabs align-tabs="center">
 						<VTab to="/">Home</VTab>
-						<VTab to="/about">About</VTab>
+						<VTab to="/login">Login</VTab>
 					</VTabs>
 					<VDivider />
 				</nav>
 			</div>
 		</header>
 
-		<div class="d-flex justify-center">
-			<RouterView />
-		</div>
+		<main>
+			<div class="d-flex justify-center">
+				<RouterView />
+			</div>
+		</main>
 	</VApp>
 </template>
 
 <script setup lang="ts">
+import { LogoutBtn } from "@feature/logout";
 import { RouterView } from "vue-router";
 </script>

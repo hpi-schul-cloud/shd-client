@@ -17,6 +17,7 @@ module.exports = merge(common, {
 		process.env.NODE_ENV === "development"
 			? {
 					port: 4100,
+					historyApiFallback: true,
 					allowedHosts: "all",
 					client: {
 						overlay: false,

@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 api/account-api.ts
 api/admin-students-api.ts
@@ -93,6 +92,7 @@ models/context-external-tool-response.ts
 models/context-external-tool-search-list-response.ts
 models/copy-api-response.ts
 models/county-response.ts
+models/course-common-cartridge-metadata-response.ts
 models/course-export-body-params.ts
 models/course-info-response.ts
 models/course-metadata-list-response.ts
@@ -195,6 +195,7 @@ models/oauth-client-create-body.ts
 models/oauth-client-response.ts
 models/oauth-client-update-body.ts
 models/oauth-config-response.ts
+models/oauth-provider-login-response.ts
 models/oauth-token-dto.ts
 models/oauth2-authorization-body-params.ts
 models/oauth2-migration-params.ts
