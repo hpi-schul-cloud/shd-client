@@ -16,7 +16,7 @@
     "generate-client:server": "node generate-client.js -c openapitools-for-server.json"
   },
   "dependencies": {
-    "@vueuse/core": "^10.11.0",
+    "@vueuse/core": "^11.2.0",
     "axios": "^1.7.2",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.12",
