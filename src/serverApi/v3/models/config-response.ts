@@ -106,24 +106,6 @@ export interface ConfigResponse {
      * @type {boolean}
      * @memberof ConfigResponse
      */
-    TLDRAW__ASSETS_ENABLED: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof ConfigResponse
-     */
-    TLDRAW__ASSETS_MAX_SIZE: number;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ConfigResponse
-     */
-    TLDRAW__ASSETS_ALLOWED_MIME_TYPES_LIST: Array<string>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ConfigResponse
-     */
     ADMIN_TABLES_DISPLAY_CONSENT_COLUMN: boolean;
     /**
      * 
@@ -425,6 +407,6 @@ export interface ConfigResponse {
      * @memberof ConfigResponse
      */
     FEATURE_AI_TUTOR_ENABLED: boolean;
-}
+    }
 
 
