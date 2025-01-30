@@ -46,6 +46,8 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         runAsNonRoot: true
+      os:
+        name: linux
       containers:
       - name: shd-client
         image: {{ SHD_CLIENT_IMAGE }}:{{ SHD_CLIENT_IMAGE_TAG }}
