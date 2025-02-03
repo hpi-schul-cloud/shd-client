@@ -1,3 +1,4 @@
 ---
 SHD_CLIENT_IMAGE: quay.io/schulcloudverbund/shd-client
 SHD_CLIENT_PREFIX: superhero.
+WITH_SHD_CLIENT: false
