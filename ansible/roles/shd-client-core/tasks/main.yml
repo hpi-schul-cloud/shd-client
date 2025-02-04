@@ -3,7 +3,8 @@
     kubeconfig: ~/.kube/config
     namespace: "{{ NAMESPACE }}"
     template: svc.yml.j2
-    state: "{{ WITH_SHD_CLIENT|bool else 'absent' }}"
+    state: absent
+  when: WITH_SHD_CLIENT is not defined or not WITH_SHD_CLIENT | bool
   tags:
     - service
 
@@ -13,7 +14,8 @@
     namespace: "{{ NAMESPACE }}"
     template: configmap.yml.j2
     apply: yes
-    state: "{{ WITH_SHD_CLIENT|bool else 'absent' }}"
+    state: absent
+  when: WITH_SHD_CLIENT is not defined or not WITH_SHD_CLIENT | bool
   tags:
     - configmap
 
@@ -22,7 +24,8 @@
     kubeconfig: ~/.kube/config
     namespace: "{{ NAMESPACE }}"
     template: deployment.yml.j2
-    state: "{{ WITH_SHD_CLIENT|bool else 'absent' }}"
+    state: absent
+  when: WITH_SHD_CLIENT is not defined or not WITH_SHD_CLIENT | bool
   tags:
     - deployment
 
@@ -31,6 +34,7 @@
     kubeconfig: ~/.kube/config
     namespace: "{{ NAMESPACE }}"
     template: ingress.yml.j2
-    state: "{{ WITH_SHD_CLIENT|bool else 'absent' }}"
+    state: absent
+  when: WITH_SHD_CLIENT is not defined or not WITH_SHD_CLIENT | bool
   tags:
     - ingress
